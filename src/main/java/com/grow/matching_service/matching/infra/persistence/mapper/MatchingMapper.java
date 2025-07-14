@@ -5,25 +5,26 @@ import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEn
 
 public class MatchingMapper {
 
-	public static Matching toDomain(MatchingJpaEntity e) {
+	// 엔티티를 도메인으로 변경
+	public static Matching toDomain(MatchingJpaEntity entity) {
 		return Matching.of(
-			e.getMatchingId(),
-			e.getMemberId(),
-			e.getCategory(),
-			e.getMostActiveTime(),
-			e.getIsAttending(),
-			e.getIntroduction()
+			entity.getMatchingId(),
+			entity.getMemberId(),
+			entity.getCategory(),
+			entity.getMostActiveTime(),
+			entity.getIsAttending(),
+			entity.getIntroduction()
 		);
 	}
 
-	public static MatchingJpaEntity toEntity(Matching d) {
+	// 도메인을 엔티티로 변경
+	public static MatchingJpaEntity toEntity(Matching domain) {
 		return MatchingJpaEntity.builder()
-			.matchingId(d.getMatchingId())
-			.memberId(d.getMemberId())
-			.category(d.getCategory())
-			.mostActiveTime(d.getMostActiveTime())
-			.isAttending(d.getIsAttending())
-			.introduction(d.getIntroduction())
+			.memberId(domain.getMemberId())
+			.category(domain.getCategory())
+			.mostActiveTime(domain.getMostActiveTime())
+			.isAttending(domain.getIsAttending())
+			.introduction(domain.getIntroduction())
 			.build();
 	}
 }

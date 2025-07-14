@@ -5,15 +5,10 @@ import java.time.LocalDateTime;
 import com.grow.matching_service.matching.domain.enums.Category;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
-@Builder
 @Table(name = "matching")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,4 +33,18 @@ public class MatchingJpaEntity {
 
 	@Column(columnDefinition = "text")
 	private String introduction;
+
+	@Builder
+	public MatchingJpaEntity(Long memberId,
+							 Category category,
+							 LocalDateTime mostActiveTime,
+							 Boolean isAttending,
+							 String introduction
+	) {
+		this.memberId = memberId;
+		this.category = category;
+		this.mostActiveTime = mostActiveTime;
+		this.isAttending = isAttending;
+		this.introduction = introduction;
+	}
 }
