@@ -1,9 +1,10 @@
 package com.grow.matching_service.matching.infra.persistence.entity;
 
-import java.time.LocalDateTime;
-
+import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
 
+import com.grow.matching_service.matching.domain.enums.Level;
+import com.grow.matching_service.matching.domain.enums.MostActiveTime;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,10 +27,16 @@ public class MatchingJpaEntity {
 	private Category category;
 
 	@Column(nullable = false)
-	private LocalDateTime mostActiveTime;
+	private MostActiveTime mostActiveTime;
 
 	@Column(nullable = false)
-	private Boolean isAttending;
+	private Level level;
+
+	@Column(nullable = false)
+	private Age age;
+
+	@Column(nullable = false)
+	private Boolean isAttending; // 오프라인 모임 참석 여부
 
 	@Column(columnDefinition = "text")
 	private String introduction;
@@ -37,13 +44,17 @@ public class MatchingJpaEntity {
 	@Builder
 	public MatchingJpaEntity(Long memberId,
 							 Category category,
-							 LocalDateTime mostActiveTime,
+							 MostActiveTime mostActiveTime,
+							 Level level,
+							 Age age,
 							 Boolean isAttending,
 							 String introduction
 	) {
 		this.memberId = memberId;
 		this.category = category;
 		this.mostActiveTime = mostActiveTime;
+		this.level = level;
+		this.age = age;
 		this.isAttending = isAttending;
 		this.introduction = introduction;
 	}
