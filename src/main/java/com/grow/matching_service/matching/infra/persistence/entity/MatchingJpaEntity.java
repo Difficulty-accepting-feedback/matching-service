@@ -1,5 +1,6 @@
 package com.grow.matching_service.matching.infra.persistence.entity;
 
+import com.grow.matching_service.matching.application.event.MatchingEntityListener;
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
 
@@ -11,6 +12,7 @@ import lombok.*;
 @Entity
 @Getter
 @Table(name = "matching")
+@EntityListeners(MatchingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MatchingJpaEntity {
