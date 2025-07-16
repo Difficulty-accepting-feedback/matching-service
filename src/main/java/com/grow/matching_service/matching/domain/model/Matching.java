@@ -81,19 +81,36 @@ public class Matching {
         this.introduction    = introduction;
     }
 
+    // 검증 로직 추가
     public void updateCategory(Category newCategory) {
+        if (newCategory == null) {
+            throw new IllegalArgumentException("카테고리는 null일 수 없습니다");
+        }
+
         this.category = newCategory;
     }
 
     public void updateMostActiveTime(MostActiveTime newMostActiveTime) {
+        if (newMostActiveTime == null) {
+            throw new IllegalArgumentException("활동 시간은 null일 수 없습니다");
+        }
+
         this.mostActiveTime = newMostActiveTime;
     }
 
     public void updateLevel(Level newLevel) {
+        if (newLevel == null) {
+            throw new IllegalArgumentException("수준은 null일 수 없습니다");
+        }
+
         this.level = newLevel;
     }
 
     public void updateAge(Age newAge) {
+        if (newAge == null) {
+            throw new IllegalArgumentException("나이는 null일 수 없습니다");
+        }
+
         this.age = newAge;
     }
 
