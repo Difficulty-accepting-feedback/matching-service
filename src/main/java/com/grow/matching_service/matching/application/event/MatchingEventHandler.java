@@ -2,6 +2,7 @@ package com.grow.matching_service.matching.application.event;
 
 import com.grow.matching_service.matching.domain.dto.MatchingResult;
 import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.persistence.repository.MatchingQueryRepository;
 import com.grow.matching_service.matching.infra.persistence.repository.MatchingQueryRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MatchingEventHandler {
 
-    private final MatchingQueryRepositoryImpl queryRepository;
+    private final MatchingQueryRepository queryRepository;
 
     @Async // 트랜잭션 도입 필요할 시 트랜잭션 경계 고려 필요
     @EventListener

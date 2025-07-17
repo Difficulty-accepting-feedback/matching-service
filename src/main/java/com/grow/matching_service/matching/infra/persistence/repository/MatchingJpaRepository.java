@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
 
 public interface MatchingJpaRepository
-	extends JpaRepository<MatchingJpaEntity, Long>, MatchingQueryRepository {
+	extends JpaRepository<MatchingJpaEntity, Long> {
 	List<MatchingJpaEntity> findByMemberId(Long memberId);
 }
