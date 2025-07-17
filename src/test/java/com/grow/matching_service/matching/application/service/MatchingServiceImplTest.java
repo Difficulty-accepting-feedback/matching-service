@@ -1,6 +1,6 @@
 package com.grow.matching_service.matching.application.service;
 
-import com.grow.matching_service.matching.persistence.dto.MatchingRequest;
+import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
 import com.grow.matching_service.matching.domain.enums.Level;

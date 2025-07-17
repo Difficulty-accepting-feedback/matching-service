@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.config;
+package com.grow.matching_service.matching.infra.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

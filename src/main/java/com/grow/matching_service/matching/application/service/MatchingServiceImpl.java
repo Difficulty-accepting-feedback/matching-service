@@ -1,6 +1,6 @@
 package com.grow.matching_service.matching.application.service;
 
-import com.grow.matching_service.matching.persistence.dto.MatchingRequest;
+import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.domain.repository.MatchingRepository;
 import jakarta.transaction.Transactional;
