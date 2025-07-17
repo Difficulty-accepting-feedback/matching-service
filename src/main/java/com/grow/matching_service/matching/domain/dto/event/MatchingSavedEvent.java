@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.domain.event;
+package com.grow.matching_service.matching.domain.dto.event;
 
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import org.springframework.context.ApplicationEvent;

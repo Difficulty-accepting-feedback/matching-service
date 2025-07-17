@@ -1,7 +1,7 @@
 package com.grow.matching_service.matching.application.event;
 
 import com.grow.matching_service.matching.domain.dto.MatchingResult;
-import com.grow.matching_service.matching.domain.event.MatchingSavedEvent;
+import com.grow.matching_service.matching.domain.dto.event.MatchingSavedEvent;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import com.grow.matching_service.matching.infra.repository.MatchingQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * TODO DTO 를 받아서 사용하는 방식으로 코드 수정 필요함
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

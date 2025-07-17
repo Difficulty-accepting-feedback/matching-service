@@ -1,6 +1,6 @@
-package com.grow.matching_service.matching.application.event;
+package com.grow.matching_service.matching.infra.event;
 
-import com.grow.matching_service.matching.domain.event.MatchingSavedEvent;
+import com.grow.matching_service.matching.domain.dto.event.MatchingSavedEvent;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
