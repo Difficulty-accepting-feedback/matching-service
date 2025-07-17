@@ -1,8 +1,8 @@
-package com.grow.matching_service.matching.infra.persistence.repository;
+package com.grow.matching_service.matching.infra.repository;
 
 import com.grow.matching_service.matching.domain.dto.MatchingResult;
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
-import com.grow.matching_service.matching.infra.persistence.entity.QMatchingJpaEntity;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.entity.QMatchingJpaEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;

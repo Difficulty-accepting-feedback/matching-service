@@ -1,7 +1,7 @@
-package com.grow.matching_service.matching.infra.persistence.mapper;
+package com.grow.matching_service.matching.infra.mapper;
 
 import com.grow.matching_service.matching.domain.model.Matching;
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 
 public class MatchingMapper {
 

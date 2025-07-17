@@ -1,7 +1,7 @@
-package com.grow.matching_service.matching.infra.persistence.repository;
+package com.grow.matching_service.matching.infra.repository;
 
 import com.grow.matching_service.matching.domain.dto.MatchingResult;
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 
 import java.util.List;
 

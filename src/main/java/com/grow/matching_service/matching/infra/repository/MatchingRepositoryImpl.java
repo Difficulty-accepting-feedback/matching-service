@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.infra.persistence.repository;
+package com.grow.matching_service.matching.infra.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.domain.repository.MatchingRepository;
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
-import com.grow.matching_service.matching.infra.persistence.mapper.MatchingMapper;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.mapper.MatchingMapper;
 
 import lombok.RequiredArgsConstructor;
 

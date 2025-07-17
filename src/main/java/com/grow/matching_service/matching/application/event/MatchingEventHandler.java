@@ -1,9 +1,9 @@
 package com.grow.matching_service.matching.application.event;
 
 import com.grow.matching_service.matching.domain.dto.MatchingResult;
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
-import com.grow.matching_service.matching.infra.persistence.repository.MatchingQueryRepository;
-import com.grow.matching_service.matching.infra.persistence.repository.MatchingQueryRepositoryImpl;
+import com.grow.matching_service.matching.domain.event.MatchingSavedEvent;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.repository.MatchingQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

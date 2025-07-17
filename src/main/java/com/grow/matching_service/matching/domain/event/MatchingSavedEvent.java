@@ -1,6 +1,6 @@
-package com.grow.matching_service.matching.application.event;
+package com.grow.matching_service.matching.domain.event;
 
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import org.springframework.context.ApplicationEvent;
 
 /**

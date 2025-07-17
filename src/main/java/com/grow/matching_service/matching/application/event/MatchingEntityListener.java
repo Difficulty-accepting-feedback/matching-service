@@ -1,11 +1,15 @@
 package com.grow.matching_service.matching.application.event;
 
-import com.grow.matching_service.matching.infra.persistence.entity.MatchingJpaEntity;
+import com.grow.matching_service.matching.domain.event.MatchingSavedEvent;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+/**
+ * TODO DTO 를 넘기는 방식으로 코드 수정 필요함
+ */
 @Component
 public class MatchingEntityListener {
 

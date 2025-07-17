@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.infra.persistence.entity;
+package com.grow.matching_service.matching.infra.entity;
 
 import com.grow.matching_service.matching.application.event.MatchingEntityListener;
 import com.grow.matching_service.matching.domain.enums.Age;
