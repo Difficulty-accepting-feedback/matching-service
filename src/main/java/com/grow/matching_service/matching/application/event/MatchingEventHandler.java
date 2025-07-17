@@ -1,6 +1,6 @@
 package com.grow.matching_service.matching.application.event;
 
-import com.grow.matching_service.matching.domain.dto.MatchingResult;
+import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.domain.dto.event.MatchingSavedEvent;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import com.grow.matching_service.matching.infra.repository.MatchingQueryRepository;

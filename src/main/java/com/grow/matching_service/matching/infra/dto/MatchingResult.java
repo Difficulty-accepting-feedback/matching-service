@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.domain.dto;
+package com.grow.matching_service.matching.infra.dto;
 
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
