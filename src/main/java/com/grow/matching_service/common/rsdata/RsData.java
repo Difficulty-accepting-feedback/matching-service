@@ -1,4 +1,4 @@
-package com.grow.matching_service.rsdata;
+package com.grow.matching_service.common.rsdata;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

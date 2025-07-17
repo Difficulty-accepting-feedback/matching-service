@@ -1,8 +1,9 @@
-package com.grow.matching_service.matching.persistence.controller;
+package com.grow.matching_service.matching.presentation.controller;
 
 import com.grow.matching_service.matching.application.service.MatchingService;
-import com.grow.matching_service.matching.persistence.dto.MatchingRequest;
-import com.grow.matching_service.rsdata.RsData;
+import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
+import com.grow.matching_service.common.rsdata.RsData;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class MatchingController {
      * @return 저장된 매칭 정보 DTO
      */
     @PostMapping("/save")
-    public RsData<String> createMatching(@RequestBody MatchingRequest request) {
+    public RsData<String> createMatching(@Valid @RequestBody MatchingRequest request) {
         matchingService.createMatching(request);
 
         return new RsData<>(
