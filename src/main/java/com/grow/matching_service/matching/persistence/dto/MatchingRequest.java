@@ -1,15 +1,16 @@
-package com.grow.matching_service.matching.domain.dto;
+package com.grow.matching_service.matching.persistence.dto;
 
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
 import com.grow.matching_service.matching.domain.enums.Level;
 import com.grow.matching_service.matching.domain.enums.MostActiveTime;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Builder
 @AllArgsConstructor
-public class MatchingResult {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class MatchingRequest {
     private Long memberId;
     private Category category;
     private MostActiveTime mostActiveTime;
@@ -17,5 +18,4 @@ public class MatchingResult {
     private Age age;
     private Boolean isAttending;
     private String introduction;
-    private Integer score;
 }
