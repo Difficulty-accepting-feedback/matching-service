@@ -29,12 +29,15 @@ public class MatchingJpaEntity {
 	private Category category;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private MostActiveTime mostActiveTime;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Level level;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Age age;
 
 	@Column(nullable = false)
