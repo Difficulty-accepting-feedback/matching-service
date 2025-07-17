@@ -22,14 +22,14 @@ jacoco {
 def jacocoExcludes = [
 		'**/exception/**',
 		'**/dto/**',
-		'**/thirdparty/**',
 		'**/entity/**',
 		'**/Q*.class',
-		'**/config/**',
-		'**/common/**',
-		'**/constants/**',
-		'**/listener/**',
-		'**/swagger/**'
+		'config/**',
+		'**/MatchingServiceApplication.class',
+		'**/enums/**',
+		'**/rsdata/**',
+		'**/model/**',
+		'**/controller/**'
 ]
 
 jacocoTestCoverageVerification {
@@ -40,24 +40,30 @@ jacocoTestCoverageVerification {
 				})
 		)
 	}
+
 	violationRules {
 		rule {
 			enabled = true
 			element = 'CLASS'
 			limit {
-//				counter = 'LINE' // 라인 커버리지 기준
+//				counter = 'LINE'
 				value = 'COVEREDRATIO'
-//				minimum = 0.70 // 70% 이상이어야 통과
+//				minimum = 0.70
 			}
 		}
 	}
 }
 
 jacocoTestReport {
+	dependsOn test
+
 	reports {
 		html.required.set(true)
-		html.destination file(project.layout.buildDirectory.dir("jacoco/index.html")) as File
+		html.outputLocation = layout.buildDirectory.dir("jacoco/html")
+		xml.required.set(true)
+		csv.required.set(false)
 	}
+
 	afterEvaluate {
 		classDirectories.setFrom(
 				files(classDirectories.files.collect { dir ->
@@ -65,6 +71,7 @@ jacocoTestReport {
 				})
 		)
 	}
+
 	finalizedBy(jacocoTestCoverageVerification)
 }
 
@@ -96,8 +103,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testCompileOnly 'org.projectlombok:lombok' // 테스트 용도
-	testAnnotationProcessor 'org.projectlombok:lombok' // 테스트 용도
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	// db
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -114,6 +121,7 @@ dependencies {
 tasks.named('test') {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
 }
 
 tasks.named('asciidoctor') {
