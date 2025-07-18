@@ -1,4 +1,4 @@
-package com.grow.matching_service.common.rsdata;
+package com.grow.matching_service.matching.presentation.dto.rsdata;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
