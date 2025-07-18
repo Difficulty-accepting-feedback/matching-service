@@ -28,7 +28,6 @@ def jacocoExcludes = [
 		'**/MatchingServiceApplication.class',
 		'**/enums/**',
 		'**/rsdata/**',
-		'**/model/**',
 		'**/controller/**'
 ]
 
