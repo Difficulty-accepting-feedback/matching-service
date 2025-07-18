@@ -120,6 +120,7 @@ dependencies {
 tasks.named('test') {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
+	maxHeapSize = "2048m"
 	finalizedBy jacocoTestReport
 }
 

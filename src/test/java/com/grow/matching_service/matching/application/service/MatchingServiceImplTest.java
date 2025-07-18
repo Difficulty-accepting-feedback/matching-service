@@ -34,7 +34,7 @@ class MatchingServiceImplTest {
     void createMatching() throws Exception {
         //given
         MatchingRequest request = new MatchingRequest(
-                6L,
+                1L,
                 Category.STUDY,
                 MostActiveTime.EVENING,
                 Level.BLOOMING,
@@ -47,7 +47,7 @@ class MatchingServiceImplTest {
         matchingService.createMatching(request);
 
         //then
-        assertThat(matchingRepository.findByMemberId(6L).getFirst().getIntroduction())
+        assertThat(matchingRepository.findByMemberId(1L).getFirst().getIntroduction())
                 .isEqualTo("[TEST1]안녕하세요");
 
         Matching savedMatching = matchingRepository.findByMemberId(1L).getFirst();
