@@ -1,10 +1,13 @@
 package com.grow.matching_service.matching.application.service;
 
 import com.grow.matching_service.matching.application.dto.MatchingResponse;
+import com.grow.matching_service.matching.domain.dto.MatchingUpdateRequest;
 import com.grow.matching_service.matching.domain.enums.Category;
+import com.grow.matching_service.matching.application.exception.MatchingNotFoundException;
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.domain.repository.MatchingRepository;
+import com.grow.matching_service.matching.presentation.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -62,6 +65,47 @@ public class MatchingServiceImpl implements MatchingService {
         logging(category, memberId, responses);
 
         return responses;
+    }
+
+    /**
+     * 매칭 정보를 수정합니다.
+     *
+     * @param matchingId 수정할 매칭 ID
+     * @param request    매칭 수정 요청 DTO
+     */
+    @Override
+    @Transactional
+    public void updateMatching(Long matchingId,
+                               MatchingUpdateRequest request) {
+
+        // 도메인 객체 로드 (NotFound 예외)
+        Matching matching = matchingRepository.findByMatchingId(matchingId)
+                .orElseThrow(() -> new MatchingNotFoundException(ErrorCode.MATCHING_NOT_FOUND));
+
+        // request 값으로 도메인 업데이트 (부분 업데이트: null 이면 무시)
+        updateMatchingFields(request, matching);
+
+        // 저장
+        matchingRepository.save(matching);
+    }
+
+    private void updateMatchingFields(MatchingUpdateRequest request,
+                                      Matching matching) {
+        if (request.getMostActiveTime() != null) {
+            matching.updateMostActiveTime(request.getMostActiveTime());
+        }
+        if (request.getLevel() != null) {
+            matching.updateLevel(request.getLevel());
+        }
+        if (request.getAge() != null) {
+            matching.updateAge(request.getAge());
+        }
+        if (request.getIsAttending() != null) {
+            matching.updateAttendance(request.getIsAttending());
+        }
+        if (request.getIntroduction() != null) {
+            matching.updateIntroduction(request.getIntroduction());
+        }
     }
 
     private void logging(Category category, Long memberId, List<MatchingResponse> responses) {
