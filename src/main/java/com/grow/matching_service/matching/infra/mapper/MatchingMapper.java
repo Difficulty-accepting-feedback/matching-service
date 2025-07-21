@@ -3,6 +3,8 @@ package com.grow.matching_service.matching.infra.mapper;
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 
+import static com.grow.matching_service.matching.infra.entity.MatchingJpaEntity.*;
+
 public class MatchingMapper {
 
 	/**
@@ -27,14 +29,21 @@ public class MatchingMapper {
 	 * 새로운 도메인 객체를 생성하거나 변경된 도메인 상태를 DB에 반영
 	 */
 	public static MatchingJpaEntity toEntity(Matching domain) {
-		return MatchingJpaEntity.builder()
+		MatchingJpaEntityBuilder builder = builder()
 				.memberId(domain.getMemberId())
 				.category(domain.getCategory())
 				.mostActiveTime(domain.getMostActiveTime())
 				.level(domain.getLevel())
-				.isAttending(domain.getIsAttending())
-				.introduction(domain.getIntroduction())
 				.age(domain.getAge())
-				.build();
+				.isAttending(domain.getIsAttending())
+				.introduction(domain.getIntroduction());
+
+		// ID 조건 설정: null이 아니면 업데이트용으로 ID 추가
+		// null 일 경우에는 새로운 엔티티 생성
+		if (domain.getMatchingId() != null) {
+			builder.matchingId(domain.getMatchingId());
+		}
+
+		return builder.build();
 	}
 }
