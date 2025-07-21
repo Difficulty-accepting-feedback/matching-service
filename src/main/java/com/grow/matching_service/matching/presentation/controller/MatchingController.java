@@ -2,6 +2,7 @@ package com.grow.matching_service.matching.presentation.controller;
 
 import com.grow.matching_service.matching.application.dto.MatchingResponse;
 import com.grow.matching_service.matching.application.service.MatchingService;
+import com.grow.matching_service.matching.domain.dto.MatchingUpdateRequest;
 import com.grow.matching_service.matching.domain.enums.Category;
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.presentation.dto.rsdata.RsData;
@@ -54,6 +55,29 @@ public class MatchingController {
                 "200",
                 "회원별 매칭 정보 조회 완료",
                 responses
+        );
+    }
+
+
+    /**
+     * 매칭 정보를 수정합니다.
+     *
+     * @param matchingId 수정할 매칭 ID
+     * @param request    매칭 수정 요청 DTO
+     * @return 수정 결과
+     */
+    @PatchMapping("/update/{matchingId}")
+    public RsData<String> updateMatching(@PathVariable Long matchingId,
+                                         @Valid @RequestBody MatchingUpdateRequest request) {
+        log.info("[MATCH UPDATE] 매칭 정보 수정 요청 - matchingId: {}, request: {}", matchingId, request);
+
+        matchingService.updateMatching(matchingId, request);
+
+        log.info("[MATCH UPDATE] 매칭 정보 수정 완료 - matchingId: {}", matchingId);
+
+        return new RsData<>(
+                "200",
+                "매칭 정보 수정 완료"
         );
     }
 }
