@@ -1,5 +1,6 @@
 package com.grow.matching_service.matching.domain.dto.event;
 
+import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import org.springframework.context.ApplicationEvent;
 
@@ -8,14 +9,14 @@ import org.springframework.context.ApplicationEvent;
  */
 public class MatchingSavedEvent extends ApplicationEvent {
 
-    private final MatchingJpaEntity entity;
+    private final MatchingQueryDto matchingQueryDto;
 
-    public MatchingSavedEvent(MatchingJpaEntity entity) {
-        super(entity);
-        this.entity = entity;
+    public MatchingSavedEvent(MatchingQueryDto matchingQueryDto) {
+        super(matchingQueryDto);
+        this.matchingQueryDto = matchingQueryDto;
     }
 
-    public MatchingJpaEntity getEntity() {
-        return entity;
+    public MatchingQueryDto getDto() {
+        return matchingQueryDto;
     }
 }
