@@ -11,6 +11,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "matching")
 @EntityListeners(MatchingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -45,22 +46,4 @@ public class MatchingJpaEntity {
 
 	@Column(columnDefinition = "text")
 	private String introduction;
-
-	@Builder
-	public MatchingJpaEntity(Long memberId,
-							 Category category,
-							 MostActiveTime mostActiveTime,
-							 Level level,
-							 Age age,
-							 Boolean isAttending,
-							 String introduction
-	) {
-		this.memberId = memberId;
-		this.category = category;
-		this.mostActiveTime = mostActiveTime;
-		this.level = level;
-		this.age = age;
-		this.isAttending = isAttending;
-		this.introduction = introduction;
-	}
 }

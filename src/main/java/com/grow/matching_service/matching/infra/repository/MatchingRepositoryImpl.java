@@ -1,9 +1,11 @@
 package com.grow.matching_service.matching.infra.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.grow.matching_service.matching.domain.enums.Category;
+import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -21,9 +23,11 @@ public class MatchingRepositoryImpl implements MatchingRepository {
 	private final MatchingJpaRepository matchingJpaRepository;
 
 	@Override
-	public void save(Matching matching) {
-		matchingJpaRepository.save(MatchingMapper.toEntity(matching));
+	public Matching save(Matching matching) {
+		MatchingJpaEntity saved = matchingJpaRepository.save(MatchingMapper.toEntity(matching));
+		Matching domain = MatchingMapper.toDomain(saved);
 		log.info("[MATCH] 매칭 정보 저장 완료 - memberId: {}", matching.getMemberId());
+		return domain;
 	}
 
 	@Override
@@ -46,5 +50,11 @@ public class MatchingRepositoryImpl implements MatchingRepository {
                 .findByCategoryAndMemberIdOrderByMatchingIdDesc(category, memberId).stream()
                 .map(MatchingMapper::toDomain)
                 .collect(Collectors.toList());
+	}
+
+	@Override
+	public Optional<Matching> findByMatchingId(Long matchingId) {
+		return matchingJpaRepository.findById(matchingId)
+				.map(MatchingMapper::toDomain);
 	}
 }

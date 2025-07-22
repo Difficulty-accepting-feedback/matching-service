@@ -1,6 +1,7 @@
 package com.grow.matching_service.matching.presentation.exception;
 
 import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
+import com.grow.matching_service.matching.application.exception.MatchingNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,23 @@ public class GlobalExceptionHandler {
         return ErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .errorCode(ex.getErrorCode().toString()) // 각 코드를 불러옴
-                .message(ex.getMessage())
+                .message(ex.getErrorCode().getMessage())
+                .path(request.getRequestURI())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    // 서비스 커스텀 예외 처리 (MatchingNotFoundException)
+    @ExceptionHandler(MatchingNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleMatchingNotFoundException(MatchingNotFoundException ex,
+                                                         HttpServletRequest request) {
+        log.error("[Domain ERROR] 매칭 정보 없음: {}", ex.getMessage());
+        return ErrorResponse.builder()
+                .error(List.of("[Domain Error] 매칭 정보 없음: "))
+                .status(HttpStatus.NOT_FOUND.value())
+                .errorCode(ex.getErrorCode().toString())
+                .message(ex.getErrorCode().getMessage())
                 .path(request.getRequestURI())
                 .timestamp(LocalDateTime.now())
                 .build();
