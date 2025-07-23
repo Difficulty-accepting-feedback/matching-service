@@ -6,7 +6,8 @@ public enum Age {
     THIRTIES("30대"),
     FORTIES("40대"),
     FIFTIES("50대"),
-    SIXTIES("60대 이상");
+    SIXTIES("60대 이상"),
+    NONE("선택 없음"); // 기본 값
 
     private final String description;
 

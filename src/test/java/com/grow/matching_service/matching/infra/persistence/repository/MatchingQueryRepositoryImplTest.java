@@ -1,5 +1,7 @@
 package com.grow.matching_service.matching.infra.persistence.repository;
 
+import com.grow.matching_service.matching.domain.enums.MostActiveTime;
+import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
@@ -35,6 +37,7 @@ class MatchingQueryRepositoryImplTest {
     private MatchingQueryRepositoryImpl repository;
 
     private MatchingJpaEntity baseEntity;
+    MatchingQueryDto dto;
 
     @BeforeEach
     void setUp() {
@@ -53,7 +56,14 @@ class MatchingQueryRepositoryImplTest {
         em.flush();
         em.clear();
 
-        log.info("저장 완료");
+        dto = MatchingQueryDto.builder()
+                .memberId(1L)  // baseEntity의 memberId
+                .category(Category.STUDY)  // baseEntity의 category
+                .mostActiveTime(MORNING)  // baseEntity의 mostActiveTime
+                .level(Level.SEED)  // baseEntity의 level
+                .age(TWENTIES)  // baseEntity의 age
+                .isAttending(true)  // baseEntity의 isAttending
+                .build();
     }
 
     @Test
@@ -95,37 +105,15 @@ class MatchingQueryRepositoryImplTest {
         em.clear();
 
         // when
-        List<MatchingResult> results = repository.findMatchingUsers(baseEntity);
+        List<MatchingResult> results = repository.findMatchingUsers(dto);
 
         //then
-        // memberId=2는 모든 조건 일치 = 최고 점수, memberId=3는 레벨 차이 존재
-        log.info("가장 일치하는 사용자: {}, 점수: {}", results.getFirst().getMemberId(), results.getFirst().getScore());
-        log.info("두 번째로 일치하는 사용자: {}, 점수: {}", results.getLast().getMemberId(), results.getFirst().getScore());
+        // memberId=2는 모든 조건 일치 memberId=3는 한 가지가 다르다
+        // 일치하지 않는 memberId=4는 제외된다 -> 2개만 반환됨
         assertThat(results).hasSize(2);
         assertThat(results.get(0).getMemberId()).isEqualTo(2L);
         assertThat(results.get(1).getMemberId()).isEqualTo(3L);
-    }
-
-    @Test
-    @DisplayName("findMatchingUsers: 불일치 하는 경우 쿼리 조회에서 제외")
-    void testFindMatchingUsers_error() {
-        // given
-        em.persist(MatchingJpaEntity.builder()
-                .memberId(4L)
-                .category(Category.HOBBY) // 불일치
-                .mostActiveTime(AFTERNOON) // 불일치
-                .level(Level.BLOOMING) // 불일치
-                .age(Age.SIXTIES) // 불일치
-                .isAttending(false)
-                .introduction("match3")
-                .build());
-
-        em.flush();
-        em.clear();
-
-        // when
-        List<MatchingResult> results = repository.findMatchingUsers(baseEntity);
-
-        assertThat(results).hasSize(0);
+        assertThat(results.get(0).getScore()).isEqualTo(4);
+        assertThat(results.get(1).getScore()).isEqualTo(3);
     }
 }

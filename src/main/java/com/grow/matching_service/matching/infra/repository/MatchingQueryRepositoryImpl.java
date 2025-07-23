@@ -1,9 +1,12 @@
 package com.grow.matching_service.matching.infra.repository;
 
+import com.grow.matching_service.matching.domain.enums.Age;
+import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import com.grow.matching_service.matching.infra.entity.QMatchingJpaEntity;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,8 +44,13 @@ public class MatchingQueryRepositoryImpl implements MatchingQueryRepository {
      * @return 유사도 점수(1 ~ 4점)와 함께 정렬된 결과
      */
     @Override
-    public List<MatchingResult> findMatchingUsers(MatchingJpaEntity reference) {
+    public List<MatchingResult> findMatchingUsers(MatchingQueryDto reference) {
         QMatchingJpaEntity target = QMatchingJpaEntity.matchingJpaEntity;
+
+        // 동적 age 조건 생성
+        BooleanExpression ageCondition = (reference.getAge() == Age.NONE)
+                ? null // NONE 이면 조건 무시
+                : target.age.eq(reference.getAge()); // NONE이 아니면 같은 age만 필터링
 
         // 0~4점 범위의 동적 점수 계산 (CaseBuilder 사용)
         NumberExpression<Integer> score = buildScoreExpression(reference, target);
@@ -60,14 +68,15 @@ public class MatchingQueryRepositoryImpl implements MatchingQueryRepository {
                 ))
                 .from(target)
                 .where(
-                        target.memberId.ne(reference.getMemberId()),   // 본인 제외
-                        target.category.eq(reference.getCategory()),  // 카테고리 강제 일치
-                        score.goe(1)                                   // 1점 이상
+                        target.memberId.ne(reference.getMemberId()),    // 본인 제외
+                        target.category.eq(reference.getCategory()),    // 카테고리 강제 일치
+                        ageCondition,                                   // age 강제 일치
+                        score.goe(1)                              // 1점 이상
                 )
-                .orderBy(score.desc())
+                .orderBy(score.desc()) // 점수 내림차순 정렬 (높은 순서부터)
+                .limit(20) // 20 개 한정으로 보여 주기
                 .fetch();
     }
-
     /**
      * 각 속성 일치 시 1 점을 가산하는 점수 식을 생성한다.
      *
@@ -75,7 +84,7 @@ public class MatchingQueryRepositoryImpl implements MatchingQueryRepository {
      * @param target Q타입 엔티티
      * @return 0~4점 {@link NumberExpression}
      */
-    private NumberExpression<Integer> buildScoreExpression(MatchingJpaEntity ref,
+    private NumberExpression<Integer> buildScoreExpression(MatchingQueryDto ref,
                                                            QMatchingJpaEntity target) {
         return new CaseBuilder()
                 .when(target.mostActiveTime.eq(ref.getMostActiveTime())).then(1).otherwise(0)
