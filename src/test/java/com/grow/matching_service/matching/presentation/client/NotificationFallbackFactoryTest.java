@@ -41,6 +41,8 @@ class NotificationFallbackFactoryTest {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port()); // http://localhost:8080 설정
+        CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("notificationCircuitBreaker");
+        circuitBreaker.reset(); // 초기 상태로 초기화
 
         // 테스트 DTO 준비
         requestDto = NotificationRequestDto.builder()
