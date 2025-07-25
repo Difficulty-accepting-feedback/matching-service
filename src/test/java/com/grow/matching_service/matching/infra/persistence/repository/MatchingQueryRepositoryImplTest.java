@@ -1,6 +1,5 @@
 package com.grow.matching_service.matching.infra.persistence.repository;
 
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
 import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.domain.enums.Age;
