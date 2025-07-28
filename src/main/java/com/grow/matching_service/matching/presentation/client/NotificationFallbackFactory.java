@@ -1,6 +1,6 @@
 package com.grow.matching_service.matching.presentation.client;
 
-import com.grow.matching_service.matching.application.service.QueueService;
+import com.grow.matching_service.matching.application.service.queue.QueueService;
 import feign.FeignException;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.RequiredArgsConstructor;

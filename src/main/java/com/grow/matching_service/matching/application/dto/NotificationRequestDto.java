@@ -1,9 +1,9 @@
 package com.grow.matching_service.matching.application.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 알림 전송을 위한 DTO 클래스.
@@ -16,32 +16,39 @@ import java.time.LocalDateTime;
  * @see java.time.LocalDateTime
  */
 @Getter
+@NoArgsConstructor
+@EqualsAndHashCode // equals, hashCode 메서드 생성
 public class NotificationRequestDto {
 
     /**
      * 알림을 받을 멤버의 고유 ID.
      */
-    private final Long memberId;
+    private Long memberId;
 
     /**
      * 알림 내용 (텍스트 메시지).
      */
-    private final String content;
+    private String content;
 
     /**
      * 알림 타입 (예: "MATCH_SUCCESS" 등).
      */
-    private final String notificationType;
+    private String notificationType;
 
     /**
      * 알림 생성 타임스탬프.
      */
-    private final LocalDateTime timestamp;
+    private LocalDateTime timestamp;
 
     /**
      * 재시도 횟수 (초기값 0, 실패 시 증가).
      */
-    private int retryCount;
+    private int retryCount = 0;
+
+    /**
+     * 알림의 고유 ID (UUID).
+     */
+    private final String uuid = UUID.randomUUID().toString();
 
     /**
      * NotificationRequestDto의 빌더 생성자.
@@ -61,7 +68,6 @@ public class NotificationRequestDto {
         this.content = content;
         this.notificationType = notificationType;
         this.timestamp = timestamp;
-        this.retryCount = 0;  // 초기 재시도 횟수 설정
     }
 
     /**

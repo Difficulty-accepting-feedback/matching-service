@@ -1,6 +1,7 @@
 package com.grow.matching_service.matching.application.service;
 
 import com.grow.matching_service.matching.application.dto.NotificationRequestDto;
+import com.grow.matching_service.matching.application.service.queue.QueueService;
 import com.grow.matching_service.matching.presentation.client.NotificationServiceClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

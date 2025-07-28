@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.application.service;
+package com.grow.matching_service.matching.application.service.queue;
 
 import com.grow.matching_service.matching.application.dto.NotificationRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 /**
  * Redis를 사용해 오류로 인해 전송되지 못한 알림 메시지를 저장하는 서비스 클래스.
@@ -28,16 +31,20 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class QueueService {
+public class QueueServiceImpl implements QueueService {
 
-    private final RedisTemplate<String, NotificationRequestDto> redisTemplate;
-    private static final String QUEUE_KEY = "notification-queue"; // 추후 분리를 할지 고려해 보겠음...
+    private final RedisTemplate<String, NotificationRequestDto> dtoRedisTemplate;
+    private final RedisTemplate<String, String> stringRedisTemplate;
+
+    private static final String QUEUE_KEY = "notification:queue";  // List 키
+    private static final String SET_KEY = "notification:in_queue"; // Set 키 (중복 체크용)
 
     /**
      * 알림 요청을 Redis 큐에 비동기적으로 추가하는 메서드.
      *
      * <p>이 메서드는 {@link Async} 어노테이션에 의해 비동기 스레드에서 실행됩니다.
      * Redis 리스트의 왼쪽에 요청을 푸시(LPUSH)하여 FIFO 순서를 유지합니다.
+     * 중복 방지를 위해 Set을 사용합니다.
      * 성공 시 정보 로그를 남기고, 실패 시 에러 로그를 기록합니다.</p>
      *
      * <p>동작 순서:
@@ -52,12 +59,25 @@ public class QueueService {
      * @see RedisTemplate#opsForList()
      */
     @Async // 비동기로 메시지를 저장
+    @Override
+    @Transactional  // Spring 트랜잭션으로 Redis 작업을 atomic 하게 처리
     public void enqueueNotification(NotificationRequestDto request) {
         try {
-            redisTemplate.opsForList().leftPush(QUEUE_KEY, request);
+            // 고유 키 값 가져오기
+            String requestId = Objects.requireNonNull(request).getUuid();
+
+            // Redis Set을 사용한 중복 체크 (이미 존재하면 0을 반환함)
+            Long added = stringRedisTemplate.opsForSet().add(SET_KEY, requestId);
+            if (added != null && added == 0) { // 중복이 발생했을 경우
+                log.warn("[Notification-Retry] Redis Set 중복 키 발생: {}", requestId);
+                return; // 중복이 발생했으므로 추가하지 않음
+            }
+
+            // List 에 추가
+            dtoRedisTemplate.opsForList().leftPush(QUEUE_KEY, request);
             log.info("알림 요청을 Redis 큐에 추가: {}", request.getContent());
         } catch (Exception e) {
-            log.error("Redis 큐 추가 실패: {}", e.getMessage());
+            log.error("[Notification-Retry] Redis 큐 추가 실패: {}", e.getMessage());
         }
     }
 
@@ -81,12 +101,19 @@ public class QueueService {
      * @see RedisTemplate#opsForList()
      */
     // 큐에서 항목을 꺼내는 메서드
+    @Override
     public NotificationRequestDto dequeueNotification() {
         try {
-            NotificationRequestDto request = redisTemplate.opsForList().rightPop(QUEUE_KEY);
+            NotificationRequestDto request = dtoRedisTemplate.opsForList().rightPop(QUEUE_KEY);
             if (request != null) {
-                log.info("Redis 큐에서 알림 요청 꺼냄: {}", request.getContent());
+                log.info("[Notification-Retry] Redis 큐에서 알림 요청 꺼냄: {}", request.getContent());
             }
+
+            String requestId = Objects.requireNonNull(request).getUuid();
+
+            // set 에서 제거
+            stringRedisTemplate.opsForSet().remove(SET_KEY, requestId);
+            log.info("[Notification-Retry] Redis Set 에서 제거: {}", requestId);
             return request;
         } catch (Exception e) {
             log.error("Redis 큐에서 제거 실패: {}", e.getMessage());
