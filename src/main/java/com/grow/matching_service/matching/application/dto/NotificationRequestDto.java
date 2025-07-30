@@ -33,7 +33,7 @@ public class NotificationRequestDto {
     /**
      * 알림 타입 (예: "MATCH_SUCCESS" 등).
      */
-    private String notificationType;
+    private NotificationType notificationType;
 
     /**
      * 알림 생성 타임스탬프.
@@ -62,7 +62,7 @@ public class NotificationRequestDto {
     @Builder
     public NotificationRequestDto(Long memberId,
                                   String content,
-                                  String notificationType,
+                                  NotificationType notificationType,
                                   LocalDateTime timestamp) {
         this.memberId = memberId;
         this.content = content;

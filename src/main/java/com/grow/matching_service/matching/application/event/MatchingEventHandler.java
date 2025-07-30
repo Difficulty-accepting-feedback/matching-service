@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.grow.matching_service.matching.application.dto.NotificationType.MATCHING_SUCCESS;
+
 /**
  * 매칭 이벤트 핸들러 클래스.
  * <p>
@@ -93,7 +95,7 @@ public class MatchingEventHandler {
         notificationService.sendNotification(NotificationRequestDto.builder()
                 .memberId(reference.getMemberId())
                 .content("매칭 성공! " + matchingUsers.size() + "명의 사용자와 매칭되었습니다.")
-                .notificationType("MATCH_SUCCESS")
+                .notificationType(MATCHING_SUCCESS)
                 .build());
     }
 
@@ -112,7 +114,7 @@ public class MatchingEventHandler {
                 .memberId(matchingUser.getMemberId())
                 .content("새로운 매칭! 사용자 " + reference.getMemberId() + "와 매칭되었습니다. " +
                         "유사도: " + matchingUser.getScore() + "점")
-                .notificationType("MATCH_SUCCESS")
+                .notificationType(MATCHING_SUCCESS)
                 .build());
     }
 
