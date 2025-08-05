@@ -40,7 +40,7 @@ class NotificationFallbackFactoryTest {
     void setUp() {
         wireMockServer = new WireMockServer();
         wireMockServer.start();
-        WireMock.configureFor("localhost", wireMockServer.port()); // http://localhost:8080 설정
+        WireMock.configureFor("localhost", 8080); // http://localhost:8080 설정
         CircuitBreaker circuitBreaker = circuitBreakerRegistry.circuitBreaker("notificationCircuitBreaker");
         circuitBreaker.reset(); // 초기 상태로 초기화
 
