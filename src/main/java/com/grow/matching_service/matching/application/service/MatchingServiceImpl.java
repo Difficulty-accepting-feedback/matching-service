@@ -136,6 +136,9 @@ public class MatchingServiceImpl implements MatchingService {
         if (request.getIntroduction() != null) {
             matching.updateIntroduction(request.getIntroduction());
         }
+        if (matching.getStatus() != request.getStatus()) {
+            matching.updateStatus(request.getStatus());
+        }
     }
 
     private void logging(Category category, Long memberId, List<MatchingResponse> responses) {

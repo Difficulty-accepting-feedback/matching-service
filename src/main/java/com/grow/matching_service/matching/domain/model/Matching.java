@@ -166,6 +166,10 @@ public class Matching {
         this.introduction = newIntro;
     }
 
+    public void updateStatus(MatchingStatus status) {
+        this.status = status;
+    }
+
     // ==== 유효성 검증 ==== //
     private static void checkAgeField(Age age) {
         if (age == null) {
