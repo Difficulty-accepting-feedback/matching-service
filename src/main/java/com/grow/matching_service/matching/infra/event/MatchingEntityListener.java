@@ -1,6 +1,7 @@
 package com.grow.matching_service.matching.infra.event;
 
 import com.grow.matching_service.matching.domain.dto.event.MatchingSavedEvent;
+import com.grow.matching_service.matching.domain.enums.MatchingStatus;
 import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
 import jakarta.persistence.PostPersist;
@@ -32,6 +33,10 @@ public class MatchingEntityListener {
                 .age(entity.getAge())
                 .isAttending(entity.getIsAttending())
                 .build();
+
+        if (entity.getStatus() == MatchingStatus.DELETED || entity.getStatus() == MatchingStatus.INACTIVE) {
+            return; // 삭제 또는 비활성화 상태일 경우는 이벤트 발행하지 않음
+        }
 
         // DTO를 포함한 이벤트 발행
         publisher.publishEvent(new MatchingSavedEvent(dto));
