@@ -1,5 +1,6 @@
 package com.grow.matching_service.matching.infra.entity;
 
+import com.grow.matching_service.matching.domain.model.MatchingStatus;
 import com.grow.matching_service.matching.infra.event.MatchingEntityListener;
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
@@ -46,4 +47,10 @@ public class MatchingJpaEntity {
 
 	@Column(columnDefinition = "text")
 	private String introduction;
+
+	@Enumerated(EnumType.STRING)
+	private MatchingStatus status; // 매칭 삭제 여부 (ACTIVE, DELETED)
+
+	@Version
+	private Long version; // Optimistic Lock 처리를 위한 버전 관리
 }
