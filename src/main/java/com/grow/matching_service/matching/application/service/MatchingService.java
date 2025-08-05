@@ -11,4 +11,5 @@ public interface MatchingService {
     void createMatching(MatchingRequest request);
     List<MatchingResponse> getMatchingsByCategory(Category category, Long memberId);
     void updateMatching(Long matchingId, MatchingUpdateRequest request);
+    void deleteMatching(Long matchingId, Long memberId);
 }
