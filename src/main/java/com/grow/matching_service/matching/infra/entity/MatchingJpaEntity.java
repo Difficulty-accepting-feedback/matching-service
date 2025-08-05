@@ -1,6 +1,6 @@
 package com.grow.matching_service.matching.infra.entity;
 
-import com.grow.matching_service.matching.domain.model.MatchingStatus;
+import com.grow.matching_service.matching.domain.enums.MatchingStatus;
 import com.grow.matching_service.matching.infra.event.MatchingEntityListener;
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Category;
