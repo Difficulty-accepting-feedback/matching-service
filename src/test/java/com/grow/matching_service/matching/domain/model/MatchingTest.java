@@ -1,12 +1,11 @@
 package com.grow.matching_service.matching.domain.model;
 
-import com.grow.matching_service.matching.domain.enums.Age;
-import com.grow.matching_service.matching.domain.enums.Category;
-import com.grow.matching_service.matching.domain.enums.Level;
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
+import com.grow.matching_service.matching.domain.enums.*;
 import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +24,8 @@ class MatchingTest {
                 Level.SEED,
                 Age.TEENS,
                 true,
-                "유효한 소개글"
+                "유효한 소개글",
+                List.of()
         );
         assertNotNull(matching);
         assertNull(matching.getMatchingId()); // 신규이니 ID null
@@ -37,23 +37,23 @@ class MatchingTest {
     void testCreateNew_InvalidRequiredFields() {
         // memberId null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(null, Category.STUDY, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, "소개"));
+                Matching.createNew(null, Category.STUDY, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, "소개", List.of()));
 
         // category null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(1L, null, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, "소개"));
+                Matching.createNew(1L, null, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, "소개", List.of()));
 
         // mostActiveTime null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(1L, Category.STUDY, null, Level.SEED, Age.TEENS, true, "소개"));
+                Matching.createNew(1L, Category.STUDY, null, Level.SEED, Age.TEENS, true, "소개", List.of()));
 
         // level null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, null, Age.TEENS, true, "소개"));
+                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, null, Age.TEENS, true, "소개", List.of()));
 
         // age null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, Level.SEED, null, true, "소개"));
+                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, Level.SEED, null, true, "소개", List.of()));
     }
 
     @Test
@@ -62,11 +62,11 @@ class MatchingTest {
         // 길이 초과 (1000자 초과)
         String longIntro = "a".repeat(1001);
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, longIntro));
+                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, longIntro, List.of()));
 
         // blank
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, " "));
+                Matching.createNew(1L, Category.STUDY, MostActiveTime.MORNING, Level.SEED, Age.TEENS, true, " ", List.of()));
     }
 
     @Test
