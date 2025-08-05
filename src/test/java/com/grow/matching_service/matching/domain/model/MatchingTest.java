@@ -80,7 +80,9 @@ class MatchingTest {
                 Level.BLOOMING,
                 Age.TWENTIES,
                 false,
-                "유효한 소개글"
+                "유효한 소개글",
+                1L,
+                MatchingStatus.ACTIVE
         );
         assertNotNull(matching);
         assertEquals(1L, matching.getMatchingId());
@@ -91,10 +93,10 @@ class MatchingTest {
     @DisplayName("loadExisting 실패 케이스: matchingId 무효 (null 이거나 0L)")
     void testLoadExisting_InvalidMatchingId() {
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.loadExisting(null, 1L, Category.HOBBY, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개"));
+                Matching.loadExisting(null, 1L, Category.HOBBY, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개", 1L, MatchingStatus.ACTIVE));
 
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.loadExisting(0L, 1L, Category.HOBBY, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개"));
+                Matching.loadExisting(0L, 1L, Category.HOBBY, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개", 1L, MatchingStatus.ACTIVE));
     }
 
     @Test
@@ -102,10 +104,10 @@ class MatchingTest {
     void testLoadExisting_InvalidRequiredFields() {
         // memberId null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.loadExisting(1L, null, Category.HOBBY, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개"));
+                Matching.loadExisting(1L, null, Category.HOBBY, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개", 1L, MatchingStatus.ACTIVE));
 
         // category null
         assertThrows(InvalidMatchingParameterException.class, () ->
-                Matching.loadExisting(1L, 1L, null, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개"));
+                Matching.loadExisting(1L, 1L, null, MostActiveTime.AFTERNOON, Level.BLOOMING, Age.TWENTIES, false, "소개", 1L, MatchingStatus.ACTIVE));
     }
 }

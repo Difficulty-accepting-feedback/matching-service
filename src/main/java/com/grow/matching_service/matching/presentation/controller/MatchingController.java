@@ -6,6 +6,7 @@ import com.grow.matching_service.matching.domain.dto.MatchingUpdateRequest;
 import com.grow.matching_service.matching.domain.enums.Category;
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.presentation.dto.rsdata.RsData;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/matching")
+@RequestMapping("/api/v1/matching")
 public class MatchingController {
 
     private final MatchingService matchingService;
@@ -44,8 +45,8 @@ public class MatchingController {
      * @return 매칭 정보 DTO 리스트
      */
     @GetMapping("/check")
-    public RsData<List<MatchingResponse>> getAllMatching(@RequestParam("category") Category category,
-                                                         @RequestParam("memberId") Long memberId) {
+    public RsData<List<MatchingResponse>> getAllMatching(@RequestHeader("X-Authorization-Id") Long memberId,
+                                                         @RequestParam("category") Category category) {
         log.info("[MATCH] 카테고리별 회원 매칭 목록 조회 요청 - category: {}, memberId: {}",
                 category, memberId);
 
@@ -78,6 +79,26 @@ public class MatchingController {
         return new RsData<>(
                 "200",
                 "매칭 정보 수정 완료"
+        );
+    }
+
+    /**
+     * 매칭 정보를 삭제합니다.
+     * @param matchingId 삭제할 매칭 ID
+     * @return 삭제 결과 - 성공: 200, 실패: 예외 발생
+     */
+    @DeleteMapping("/delete/{matchingId}")
+    public RsData<String> deleteMatching(@PathVariable Long matchingId,
+                                         @RequestHeader("X-Authorization-Id") Long memberId) {
+        log.info("[MATCH DELETE] 매칭 정보 삭제 요청 - matchingId: {}", matchingId);
+
+        matchingService.deleteMatching(matchingId, memberId);
+
+        log.info("[MATCH DELETE] 매칭 정보 삭제 완료 - matchingId: {}", matchingId);
+
+        return new RsData<>(
+                "200",
+                "매칭 정보 삭제 완료"
         );
     }
 }

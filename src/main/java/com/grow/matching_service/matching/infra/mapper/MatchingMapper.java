@@ -20,7 +20,9 @@ public class MatchingMapper {
 				entity.getLevel(),
 				entity.getAge(),
 				entity.getIsAttending(),
-				entity.getIntroduction()
+				entity.getIntroduction(),
+				entity.getVersion(),
+				entity.getStatus()
 		);
 	}
 
@@ -36,7 +38,9 @@ public class MatchingMapper {
 				.level(domain.getLevel())
 				.age(domain.getAge())
 				.isAttending(domain.getIsAttending())
-				.introduction(domain.getIntroduction());
+				.introduction(domain.getIntroduction())
+				.version(domain.getVersion())
+				.status(domain.getStatus());
 
 		// ID 조건 설정: null이 아니면 업데이트용으로 ID 추가
 		// null 일 경우에는 새로운 엔티티 생성

@@ -13,7 +13,11 @@ public enum ErrorCode {
     INVALID_AGE_ID("400", "유효하지 않은 나이 값입니다."),
     INVALID_INTRODUCTION("400", "유효하지 않은 소개글 값입니다."),
     INVALID_MEMBER_ID("400", "유효하지 않은 회원 ID 값입니다." ),
-    MATCHING_NOT_FOUND("404", "매칭 정보가 없습니다." ),;
+    MATCHING_NOT_FOUND("404", "매칭 정보가 없습니다." ),
+    INVALID_MATCHING_STATUS_ID("400", "유효하지 않은 매칭 상태 값입니다." ),
+
+    MATCHING_OWNERSHIP_MISMATCH("403", "매칭 정보의 소유자가 아닙니다."),
+    MATCHING_ALREADY_DELETED("409", "매칭 정보가 이미 삭제되었습니다."),;
 
     private final String code;
     private final String message;

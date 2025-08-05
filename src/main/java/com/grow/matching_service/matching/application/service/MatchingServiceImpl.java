@@ -30,11 +30,6 @@ public class MatchingServiceImpl implements MatchingService {
     @Override
     @Transactional
     public void createMatching(MatchingRequest request) {
-        // 입력값 기본 검증 (나머지 필드에 대한 검증은 DTO 객체에서 실행)
-        if (request == null) {
-            throw new IllegalArgumentException("매칭 요청이 null 입니다.");
-        }
-
         // 도메인 생성
         Matching matching = createNewDomain(request);
 
@@ -87,6 +82,31 @@ public class MatchingServiceImpl implements MatchingService {
 
         // 저장
         matchingRepository.save(matching);
+    }
+
+    /**
+     * 주어진 매칭 ID와 멤버 ID를 사용하여 매칭을 삭제합니다.
+     * 이 메서드는 소프트 삭제(soft delete)를 수행하며, 실제로 데이터베이스에서 레코드를 제거하지 않고 상태를 변경하여 삭제된 것으로 표시합니다.
+     * 트랜잭션 내에서 실행되며, 매개변수의 유효성을 검사한 후 매칭 객체를 조회하고 삭제 로직을 적용합니다.
+     *
+     * @param matchingId 삭제할 매칭의 고유 ID. null이 아닌 유효한 값이어야 합니다.
+     * @param memberId 삭제를 요청하는 멤버의 고유 ID. null이 아닌 유효한 값이어야 합니다.
+     * @throws IllegalArgumentException matchingId 또는 memberId가 null일 경우 발생합니다
+     * @throws MatchingNotFoundException 주어진 matchingId에 해당하는 매칭이 존재하지 않을 경우 발생합니다.
+     */
+    @Override
+    @Transactional
+    public void deleteMatching(Long matchingId,
+                               Long memberId) {
+        if (matchingId == null || memberId == null) {
+            throw new IllegalArgumentException("유효하지 않은 매칭 ID 입니다.");
+        }
+
+        Matching matching = matchingRepository.findByMatchingId(matchingId).orElseThrow(() ->
+                new MatchingNotFoundException(ErrorCode.MATCHING_NOT_FOUND));
+
+        matching.delete(memberId); // 도메인 메서드 호출
+        matchingRepository.save(matching); // soft delete 처리 -> DB에 저장된 상태만 유지
     }
 
     private void updateMatchingFields(MatchingUpdateRequest request,

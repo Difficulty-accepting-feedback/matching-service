@@ -1,9 +1,12 @@
 package com.grow.matching_service.matching.domain.model;
 
+import com.grow.matching_service.matching.application.exception.AccessDeniedException;
+import com.grow.matching_service.matching.application.exception.AlreadyDeletedException;
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Level;
 import com.grow.matching_service.matching.domain.enums.MostActiveTime;
 import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
+import com.grow.matching_service.matching.presentation.exception.ErrorCode;
 import lombok.Getter;
 
 import com.grow.matching_service.matching.domain.enums.Category;
@@ -21,6 +24,8 @@ public class Matching {
     private Level level;
     private Boolean isAttending;
     private String introduction;
+    private MatchingStatus status;
+    private Long version;
 
     /** 신규 매칭 생성용 팩토리 */
     public static Matching createNew(Long memberId,
@@ -43,7 +48,9 @@ public class Matching {
                 level,
                 age,
                 isAttending,
-                introduction
+                introduction,
+                null, // 기본 버전은 0
+                MatchingStatus.ACTIVE // 기본 상태는 ACTIVE
         );
     }
 
@@ -55,11 +62,14 @@ public class Matching {
                                         Level level,
                                         Age age,
                                         Boolean isAttending,
-                                        String introduction
+                                        String introduction,
+                                        Long version,
+                                        MatchingStatus status
     ) {
         // 로드 시 기본 검증 (DB 데이터를 100% 신뢰하지 않는 것이 좋음)
         validateMatchingId(matchingId); // ID 유효성 (제대로 생성이 됐는지)
         validateRequiredFields(memberId, category, mostActiveTime, level, age);
+        checkStatusField(status);
 
         return new Matching(
                 matchingId,
@@ -69,7 +79,9 @@ public class Matching {
                 level,
                 age,
                 isAttending,
-                introduction
+                introduction,
+                version,
+                status
         );
     }
 
@@ -81,7 +93,9 @@ public class Matching {
                      Level level,
                      Age age,
                      Boolean isAttending,
-                     String introduction
+                     String introduction,
+                     Long version,
+                     MatchingStatus status
     ) {
         this.matchingId      = matchingId;
         this.memberId        = memberId;
@@ -91,6 +105,8 @@ public class Matching {
         this.age             = age;
         this.isAttending     = isAttending;
         this.introduction    = introduction;
+        this.version         = version;
+        this.status          = status;
     }
 
     // 공통 검증: 필수 필드 null 체크
@@ -121,11 +137,7 @@ public class Matching {
         }
     }
 
-    public void updateCategory(Category newCategory) {
-        checkCategoryField(newCategory);
-        this.category = newCategory;
-    }
-
+    // ==== 업데이트 로직 ==== //
     public void updateMostActiveTime(MostActiveTime newMostActiveTime) {
         checkActiveTimeField(newMostActiveTime);
         this.mostActiveTime = newMostActiveTime;
@@ -151,6 +163,7 @@ public class Matching {
         this.introduction = newIntro;
     }
 
+    // ==== 유효성 검증 ==== //
     private static void checkAgeField(Age age) {
         if (age == null) {
             throw new InvalidMatchingParameterException(INVALID_AGE_ID);
@@ -181,4 +194,23 @@ public class Matching {
         }
     }
 
+    private static void checkStatusField(MatchingStatus status) {
+        if (status == null) {
+            throw new InvalidMatchingParameterException(INVALID_MATCHING_STATUS_ID);
+        }
+    }
+
+    public void delete(Long memberId) {
+        // 해당 매칭이 본인 것인지 확인하기 -> 아니면 예외 처리
+        if (!this.memberId.equals(memberId)) {
+            throw new AccessDeniedException(ErrorCode.MATCHING_OWNERSHIP_MISMATCH);
+        }
+
+        // 해당 매칭이 삭제된 상태인지 확인하기 -> 아니면 예외 처리
+        if (this.status.equals(MatchingStatus.DELETED)) {
+            throw new AlreadyDeletedException(ErrorCode.MATCHING_ALREADY_DELETED);
+        }
+
+        this.status = MatchingStatus.DELETED; // 삭제 상태로 변경 soft delete
+    }
 }
