@@ -1,9 +1,6 @@
 package com.grow.matching_service.matching.infra.persistence.repository;
 
-import com.grow.matching_service.matching.domain.enums.Age;
-import com.grow.matching_service.matching.domain.enums.Category;
-import com.grow.matching_service.matching.domain.enums.Level;
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
+import com.grow.matching_service.matching.domain.enums.*;
 import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
@@ -45,6 +42,7 @@ public class MatchingTestV2 {
                 .age(Age.NONE) // 나이 조건 없음
                 .isAttending(true)
                 .introduction("base")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(baseEntityWithoutAge);
 
@@ -56,6 +54,7 @@ public class MatchingTestV2 {
                 .age(Age.TWENTIES) // 나이 조건 있음
                 .isAttending(true)
                 .introduction("base")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(baseEntityWithAge);
         em.flush();
@@ -92,6 +91,7 @@ public class MatchingTestV2 {
                 .age(Age.TWENTIES)
                 .isAttending(true)
                 .introduction("match1")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(age20);
 
@@ -103,6 +103,7 @@ public class MatchingTestV2 {
                 .age(Age.THIRTIES) // 다른 조건은 다 동일한데 나이만 다름
                 .isAttending(true)
                 .introduction("match2")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(age30);
 
@@ -114,6 +115,7 @@ public class MatchingTestV2 {
                 .age(Age.FORTIES)
                 .isAttending(true)
                 .introduction("match3")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(age40);
 
@@ -135,6 +137,7 @@ public class MatchingTestV2 {
                 .age(Age.TWENTIES) // 동일 조건
                 .isAttending(true)
                 .introduction("match1")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(age20);
 
@@ -146,6 +149,7 @@ public class MatchingTestV2 {
                 .age(Age.THIRTIES) // 20대 != 30대
                 .isAttending(true)
                 .introduction("match2")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(age30);
 
@@ -157,6 +161,7 @@ public class MatchingTestV2 {
                 .age(Age.FORTIES) // 20대 != 40대
                 .isAttending(true)
                 .introduction("match3")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(age40);
 

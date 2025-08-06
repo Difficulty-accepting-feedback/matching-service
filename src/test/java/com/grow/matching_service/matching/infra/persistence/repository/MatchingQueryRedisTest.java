@@ -1,9 +1,6 @@
 package com.grow.matching_service.matching.infra.persistence.repository;
 
-import com.grow.matching_service.matching.domain.enums.Age;
-import com.grow.matching_service.matching.domain.enums.Category;
-import com.grow.matching_service.matching.domain.enums.Level;
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
+import com.grow.matching_service.matching.domain.enums.*;
 import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
@@ -98,6 +95,7 @@ public class MatchingQueryRedisTest {
                     .level(i % 5 == 0 ? Level.SEED : Level.FRUITFUL) // 일부 일치
                     .age(i % 2 == 0 ? Age.TWENTIES : Age.THIRTIES) // 나이 선택하지 않았을 경우에 점수에 포함되지 않음
                     .isAttending(i % 5 == 0)
+                    .status(MatchingStatus.ACTIVE)
                     .build();
             em.persist(entity);
         }
@@ -135,6 +133,7 @@ public class MatchingQueryRedisTest {
                     .level(i % 5 == 0 ? Level.SEED : Level.FRUITFUL) // 일부 일치
                     .age(i % 2 == 0 ? Age.TWENTIES : Age.THIRTIES) // 나이 선택하지 않았을 경우에 점수에 포함되지 않음
                     .isAttending(i % 5 == 0)
+                    .status(MatchingStatus.ACTIVE)
                     .build();
             em.persist(entity);
         }
