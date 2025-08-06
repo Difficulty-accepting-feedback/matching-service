@@ -1,17 +1,12 @@
 package com.grow.matching_service.matching.domain.model;
 
-import com.grow.matching_service.matching.domain.exception.AccessDeniedException;
-import com.grow.matching_service.matching.domain.exception.AlreadyDeletedException;
+import com.grow.matching_service.matching.domain.exception.*;
 import com.grow.matching_service.matching.domain.enums.*;
-import com.grow.matching_service.matching.domain.exception.MatchingLimitExceededException;
-import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
-import com.grow.matching_service.matching.presentation.exception.ErrorCode;
 import lombok.Getter;
 
 import java.util.List;
 
-import static com.grow.matching_service.matching.presentation.exception.ErrorCode.*;
-import static com.grow.matching_service.matching.presentation.exception.ErrorCode.INVALID_MATCHING_ID;
+import static com.grow.matching_service.matching.domain.exception.ErrorCode.*;
 
 @Getter
 public class Matching {

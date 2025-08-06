@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.grow.matching_service.matching.presentation.exception.ErrorCode.*;
+import static com.grow.matching_service.matching.application.exception.ErrorCode.*;
 
 @Slf4j
 @Service
