@@ -6,10 +6,11 @@ import com.grow.matching_service.matching.domain.dto.MatchingUpdateRequest;
 import com.grow.matching_service.matching.domain.enums.Category;
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.presentation.dto.rsdata.RsData;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -68,8 +69,9 @@ public class MatchingController {
      * @param request    매칭 수정 요청 DTO
      * @return 수정 결과
      */
+    @Validated
     @PatchMapping("/update/{matchingId}")
-    public RsData<String> updateMatching(@PathVariable Long matchingId,
+    public RsData<String> updateMatching(@Positive @PathVariable Long matchingId,
                                          @Valid @RequestBody MatchingUpdateRequest request) {
         log.info("[MATCH UPDATE] 매칭 정보 수정 요청 - matchingId: {}, request: {}", matchingId, request);
 
@@ -88,8 +90,9 @@ public class MatchingController {
      * @param matchingId 삭제할 매칭 ID
      * @return 삭제 결과 - 성공: 200, 실패: 예외 발생
      */
+    @Validated
     @DeleteMapping("/delete/{matchingId}")
-    public RsData<String> deleteMatching(@PathVariable Long matchingId,
+    public RsData<String> deleteMatching(@Positive @PathVariable Long matchingId, // @Positive로 1 이상의 양수 검증
                                          @RequestHeader("X-Authorization-Id") Long memberId) {
         log.info("[MATCH DELETE] 매칭 정보 삭제 요청 - matchingId: {}", matchingId);
 
