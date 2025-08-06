@@ -31,7 +31,12 @@ public class MatchingController {
     @PostMapping("/save")
     public RsData<String> createMatching(@Valid @RequestBody MatchingRequest request,
                                          @RequestHeader("X-Authorization-Id") Long memberId) {
+
+        log.info("[MATCH] 매칭 정보 생성 요청 - request member: {}", request.getMemberId());
+
         matchingService.createMatching(request, memberId);
+
+        log.info("[MATCH] 매칭 정보 생성 완료 - request member: {}", request.getMemberId());
 
         return new RsData<>(
                 "201",
@@ -53,6 +58,9 @@ public class MatchingController {
                 category, memberId);
 
         List<MatchingResponse> responses = matchingService.getMatchingsByCategory(category, memberId);
+
+        log.info("[MATCH] 카테고리별 회원 매칭 목록 조회 완료 - category: {}, memberId: {}, 조회된 건수: {}",
+                category, memberId, responses.size());
 
         return new RsData<>(
                 "200",
