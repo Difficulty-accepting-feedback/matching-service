@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.application.exception;
+package com.grow.matching_service.matching.domain.exception;
 
 import com.grow.matching_service.matching.presentation.exception.ErrorCode;
 import lombok.AllArgsConstructor;

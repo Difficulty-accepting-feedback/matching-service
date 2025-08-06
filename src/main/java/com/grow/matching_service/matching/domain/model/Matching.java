@@ -1,7 +1,7 @@
 package com.grow.matching_service.matching.domain.model;
 
-import com.grow.matching_service.matching.application.exception.AccessDeniedException;
-import com.grow.matching_service.matching.application.exception.AlreadyDeletedException;
+import com.grow.matching_service.matching.domain.exception.AccessDeniedException;
+import com.grow.matching_service.matching.domain.exception.AlreadyDeletedException;
 import com.grow.matching_service.matching.domain.enums.*;
 import com.grow.matching_service.matching.domain.exception.MatchingLimitExceededException;
 import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
