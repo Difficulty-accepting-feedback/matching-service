@@ -138,31 +138,43 @@ public class Matching {
     // ==== 업데이트 로직 ==== //
     public void updateMostActiveTime(MostActiveTime newMostActiveTime) {
         checkActiveTimeField(newMostActiveTime);
-        this.mostActiveTime = newMostActiveTime;
+        if (!this.mostActiveTime.equals(newMostActiveTime)) {
+            this.mostActiveTime = newMostActiveTime;
+        }
     }
 
     public void updateLevel(Level newLevel) {
         checkLevelField(newLevel);
-        this.level = newLevel;
+        if (!this.level.equals(newLevel)) {
+            this.level = newLevel;
+        }
     }
 
     public void updateAge(Age newAge) {
         checkAgeField(newAge);
-        this.age = newAge;
+        if (!this.age.equals(newAge)) {
+            this.age = newAge;
+        }
     }
 
     public void updateAttendance(boolean attending) {
-        this.isAttending = attending;
+        if (!this.isAttending.equals(attending)) {
+            this.isAttending = attending;
+        }
     }
 
     public void updateIntroduction(String newIntro) {
         // 공백 체크 및 글자수 제한 추가
         validateIntroduction(newIntro);
-        this.introduction = newIntro;
+        if (!this.introduction.equals(newIntro)) {
+            this.introduction = newIntro;
+        }
     }
 
     public void updateStatus(MatchingStatus status) {
-        this.status = status;
+        if (!this.status.equals(status) && status != null) {
+            this.status = status;
+        }
     }
 
     // ==== 유효성 검증 ==== //
