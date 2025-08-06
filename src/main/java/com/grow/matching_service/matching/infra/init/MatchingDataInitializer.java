@@ -9,7 +9,8 @@ import com.grow.matching_service.matching.domain.repository.MatchingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 // @Component
@@ -29,7 +30,8 @@ public class MatchingDataInitializer implements CommandLineRunner {
                 Level.SEED,
                 Age.TEENS,
                 true,
-                "초보자를 위한 기본 스터디 그룹을 원해요. 함께 배우며 성장해요!"
+                "초보자를 위한 기본 스터디 그룹을 원해요. 함께 배우며 성장해요!",
+                List.of()
         );
         matchingRepository.save(matching1);
 
@@ -41,7 +43,8 @@ public class MatchingDataInitializer implements CommandLineRunner {
                 Level.SEEDLING,
                 Age.TWENTIES,
                 false,
-                "취미 활동을 즐기는 20대 모임. 그림 그리기와 산책을 중심으로!"
+                "취미 활동을 즐기는 20대 모임. 그림 그리기와 산책을 중심으로!",
+                List.of()
         );
         matchingRepository.save(matching2);
 
@@ -53,7 +56,8 @@ public class MatchingDataInitializer implements CommandLineRunner {
                 Level.SAPLING,
                 Age.THIRTIES,
                 true,
-                "30대 멘토링 세션. 커리어 조언과 스킬 공유를 합니다."
+                "30대 멘토링 세션. 커리어 조언과 스킬 공유를 합니다.",
+                List.of()
         );
         matchingRepository.save(matching3);
 
@@ -65,7 +69,8 @@ public class MatchingDataInitializer implements CommandLineRunner {
                 Level.BLOOMING,
                 Age.FORTIES,
                 true,
-                "고급 주제 스터디: 40대 전문가 그룹. 새벽 시간에 집중 학습."
+                "고급 주제 스터디: 40대 전문가 그룹. 새벽 시간에 집중 학습.",
+                List.of()
         );
         matchingRepository.save(matching4);
 
@@ -77,7 +82,8 @@ public class MatchingDataInitializer implements CommandLineRunner {
                 Level.FRUITFUL,
                 Age.FIFTIES,
                 false,
-                "50대 전문 취미 활동: 정원 가꾸기와 요가. 여유로운 모닝 타임."
+                "50대 전문 취미 활동: 정원 가꾸기와 요가. 여유로운 모닝 타임.",
+                List.of()
         );
         matchingRepository.save(matching5);
 

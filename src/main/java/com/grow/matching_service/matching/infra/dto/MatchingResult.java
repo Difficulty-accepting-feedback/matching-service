@@ -1,9 +1,6 @@
 package com.grow.matching_service.matching.infra.dto;
 
-import com.grow.matching_service.matching.domain.enums.Age;
-import com.grow.matching_service.matching.domain.enums.Category;
-import com.grow.matching_service.matching.domain.enums.Level;
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
+import com.grow.matching_service.matching.domain.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,5 +14,6 @@ public class MatchingResult {
     private Age age;
     private Boolean isAttending;
     private String introduction;
+    private MatchingStatus status;
     private Integer score;
 }

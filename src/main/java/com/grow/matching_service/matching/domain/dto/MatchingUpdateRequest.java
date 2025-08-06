@@ -2,6 +2,7 @@ package com.grow.matching_service.matching.domain.dto;
 
 import com.grow.matching_service.matching.domain.enums.Age;
 import com.grow.matching_service.matching.domain.enums.Level;
+import com.grow.matching_service.matching.domain.enums.MatchingStatus;
 import com.grow.matching_service.matching.domain.enums.MostActiveTime;
 import lombok.Getter;
 
@@ -15,17 +16,20 @@ public class MatchingUpdateRequest {
     private Age age;
     private Boolean isAttending;
     private String introduction;
+    private MatchingStatus status;
 
     public MatchingUpdateRequest(MostActiveTime mostActiveTime,
                                  Level level,
                                  Age age,
                                  Boolean isAttending,
-                                 String introduction
+                                 String introduction,
+                                 MatchingStatus status
     ) {
         this.mostActiveTime = mostActiveTime;
         this.level = level;
         this.age = age;
         this.isAttending = isAttending;
         this.introduction = introduction;
+        this.status = status;
     }
 }

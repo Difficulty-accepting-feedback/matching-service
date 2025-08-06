@@ -28,8 +28,9 @@ public class MatchingController {
      * @param request 매칭 요청 DTO
      */
     @PostMapping("/save")
-    public RsData<String> createMatching(@Valid @RequestBody MatchingRequest request) {
-        matchingService.createMatching(request);
+    public RsData<String> createMatching(@Valid @RequestBody MatchingRequest request,
+                                         @RequestHeader("X-Authorization-Id") Long memberId) {
+        matchingService.createMatching(request, memberId);
 
         return new RsData<>(
                 "201",

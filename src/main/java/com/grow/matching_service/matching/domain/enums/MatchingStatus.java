@@ -1,4 +1,4 @@
-package com.grow.matching_service.matching.domain.model;
+package com.grow.matching_service.matching.domain.enums;
 
 public enum MatchingStatus {
     ACTIVE,   // 매칭 활성화

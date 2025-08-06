@@ -1,11 +1,8 @@
 package com.grow.matching_service.matching.application.service;
 
 import com.grow.matching_service.matching.domain.dto.MatchingUpdateRequest;
+import com.grow.matching_service.matching.domain.enums.*;
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
-import com.grow.matching_service.matching.domain.enums.Age;
-import com.grow.matching_service.matching.domain.enums.Category;
-import com.grow.matching_service.matching.domain.enums.Level;
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.domain.repository.MatchingRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +47,7 @@ class MatchingServiceImplTest {
         );
 
         //when
-        matchingService.createMatching(request);
+        matchingService.createMatching(request, 1L);
 
         //then
         assertThat(matchingRepository.findByMemberId(1L).getFirst().getIntroduction())
@@ -69,7 +67,8 @@ class MatchingServiceImplTest {
                 Level.SEED,
                 Age.TEENS,
                 true,
-                "기존 소개글입니다."
+                "기존 소개글입니다.",
+                List.of()
         );
 
         Matching savedMatching = matchingRepository.save(initialMatching);
@@ -80,7 +79,8 @@ class MatchingServiceImplTest {
                 Level.BLOOMING,
                 Age.TWENTIES,
                 false,
-                "수정된 소개글입니다."
+                "수정된 소개글입니다.",
+                MatchingStatus.ACTIVE
         );
 
         // when: 서비스 호출

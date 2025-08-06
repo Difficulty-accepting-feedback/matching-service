@@ -70,6 +70,9 @@ public class MatchingEventHandler {
             return;
         }
 
+        log.info("[MATCH] 매칭 대상이 있습니다. memberId: {}, 인원 수: {}",
+                reference.getMemberId(), matchingUsers.size());
+
         sendNotificationOwn(reference, matchingUsers);
 
         for (MatchingResult matchingUser : matchingUsers) {

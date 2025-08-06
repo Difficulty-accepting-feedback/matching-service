@@ -1,5 +1,6 @@
 package com.grow.matching_service.matching.infra.persistence.repository;
 
+import com.grow.matching_service.matching.domain.enums.MatchingStatus;
 import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.domain.enums.Age;
@@ -49,6 +50,7 @@ class MatchingQueryRepositoryImplTest {
                 .age(TWENTIES)
                 .isAttending(true)
                 .introduction("base")
+                .status(MatchingStatus.ACTIVE)
                 .build();
         em.persist(baseEntity);
 
@@ -78,6 +80,7 @@ class MatchingQueryRepositoryImplTest {
                 .age(baseEntity.getAge())
                 .isAttending(baseEntity.getIsAttending())
                 .introduction("match1")
+                .status(MatchingStatus.ACTIVE)
                 .build()); // 완전 동일
 
         em.persist(MatchingJpaEntity.builder()
@@ -88,6 +91,7 @@ class MatchingQueryRepositoryImplTest {
                 .age(baseEntity.getAge())
                 .isAttending(baseEntity.getIsAttending())
                 .introduction("match2")
+                .status(MatchingStatus.ACTIVE)
                 .build());
 
         em.persist(MatchingJpaEntity.builder()
@@ -98,6 +102,7 @@ class MatchingQueryRepositoryImplTest {
                 .age(Age.SIXTIES) // 불일치
                 .isAttending(false)
                 .introduction("match3")
+                .status(MatchingStatus.ACTIVE)
                 .build());
 
         em.flush();

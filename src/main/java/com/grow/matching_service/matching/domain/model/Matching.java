@@ -1,15 +1,14 @@
 package com.grow.matching_service.matching.domain.model;
 
-import com.grow.matching_service.matching.application.exception.AccessDeniedException;
-import com.grow.matching_service.matching.application.exception.AlreadyDeletedException;
-import com.grow.matching_service.matching.domain.enums.Age;
-import com.grow.matching_service.matching.domain.enums.Level;
-import com.grow.matching_service.matching.domain.enums.MostActiveTime;
+import com.grow.matching_service.matching.domain.exception.AccessDeniedException;
+import com.grow.matching_service.matching.domain.exception.AlreadyDeletedException;
+import com.grow.matching_service.matching.domain.enums.*;
+import com.grow.matching_service.matching.domain.exception.MatchingLimitExceededException;
 import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
 import com.grow.matching_service.matching.presentation.exception.ErrorCode;
 import lombok.Getter;
 
-import com.grow.matching_service.matching.domain.enums.Category;
+import java.util.List;
 
 import static com.grow.matching_service.matching.presentation.exception.ErrorCode.*;
 import static com.grow.matching_service.matching.presentation.exception.ErrorCode.INVALID_MATCHING_ID;
@@ -34,11 +33,15 @@ public class Matching {
                                      Level level,
                                      Age age,
                                      Boolean isAttending,
-                                     String introduction
+                                     String introduction,
+                                     List<Matching> existingMatchings
     ) {
         // 도메인 생성 시 검증 필수
         validateIntroduction(introduction);
         validateRequiredFields(memberId, category, mostActiveTime, level, age); // 공통
+        if (existingMatchings.size() >= 3) { // 최대 매칭 수 제한
+            throw new MatchingLimitExceededException(ErrorCode.MATCHING_LIMIT_EXCEEDED);
+        }
 
         return new Matching(
                 null,
@@ -161,6 +164,10 @@ public class Matching {
         // 공백 체크 및 글자수 제한 추가
         validateIntroduction(newIntro);
         this.introduction = newIntro;
+    }
+
+    public void updateStatus(MatchingStatus status) {
+        this.status = status;
     }
 
     // ==== 유효성 검증 ==== //

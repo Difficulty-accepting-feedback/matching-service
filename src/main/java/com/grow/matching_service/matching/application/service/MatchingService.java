@@ -8,7 +8,7 @@ import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import java.util.List;
 
 public interface MatchingService {
-    void createMatching(MatchingRequest request);
+    void createMatching(MatchingRequest request, Long memberId);
     List<MatchingResponse> getMatchingsByCategory(Category category, Long memberId);
     void updateMatching(Long matchingId, MatchingUpdateRequest request);
     void deleteMatching(Long matchingId, Long memberId);

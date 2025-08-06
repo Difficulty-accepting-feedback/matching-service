@@ -7,13 +7,14 @@ import com.grow.matching_service.matching.application.exception.MatchingNotFound
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.domain.repository.MatchingRepository;
-import com.grow.matching_service.matching.presentation.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.grow.matching_service.matching.presentation.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -23,15 +24,24 @@ public class MatchingServiceImpl implements MatchingService {
     private final MatchingRepository matchingRepository;
 
     /**
-     * 매칭 정보를 저장하고, DB에 저장 -> 이벤트를 발행합니다.
+     * 사용자의 매칭 요청을 처리하여 새로운 매칭을 생성하고 저장합니다.
      *
-     * @param request 매칭 요청 DTO
+     * 이 메서드는 주어진 카테고리와 회원 ID를 기반으로 기존 매칭 정보를 조회한 후,
+     * 새로운 Matching 도메인을 생성하고 리포지토리에 저장합니다.
+     * 카테고리 별 3개를 초과한 매칭이 저장되는 경우 오류가 발생합니다.
+     *
+     * @param request 매칭 생성에 필요한 요청 데이터 (카테고리 등 포함)
+     * @param memberId 매칭을 생성할 회원의 ID
      */
     @Override
     @Transactional
-    public void createMatching(MatchingRequest request) {
-        // 도메인 생성
-        Matching matching = createNewDomain(request);
+    public void createMatching(MatchingRequest request, Long memberId) {
+        // 카테고리별 매칭 정보 조회 (갯수 확인을 위함)
+        List<Matching> matchings = matchingRepository.findByCategoryAndMemberId(
+                request.getCategory(),
+                memberId
+        );
+        Matching matching = createNewDomain(request, matchings); // 도메인 생성
 
         // 레포지토리에 저장
         matchingRepository.save(matching);
@@ -75,7 +85,7 @@ public class MatchingServiceImpl implements MatchingService {
 
         // 도메인 객체 로드 (NotFound 예외)
         Matching matching = matchingRepository.findByMatchingId(matchingId)
-                .orElseThrow(() -> new MatchingNotFoundException(ErrorCode.MATCHING_NOT_FOUND));
+                .orElseThrow(() -> new MatchingNotFoundException(MATCHING_NOT_FOUND));
 
         // request 값으로 도메인 업데이트 (부분 업데이트: null 이면 무시)
         updateMatchingFields(request, matching);
@@ -103,7 +113,7 @@ public class MatchingServiceImpl implements MatchingService {
         }
 
         Matching matching = matchingRepository.findByMatchingId(matchingId).orElseThrow(() ->
-                new MatchingNotFoundException(ErrorCode.MATCHING_NOT_FOUND));
+                new MatchingNotFoundException(MATCHING_NOT_FOUND));
 
         matching.delete(memberId); // 도메인 메서드 호출
         matchingRepository.save(matching); // soft delete 처리 -> DB에 저장된 상태만 유지
@@ -126,6 +136,9 @@ public class MatchingServiceImpl implements MatchingService {
         if (request.getIntroduction() != null) {
             matching.updateIntroduction(request.getIntroduction());
         }
+        if (matching.getStatus() != request.getStatus()) {
+            matching.updateStatus(request.getStatus());
+        }
     }
 
     private void logging(Category category, Long memberId, List<MatchingResponse> responses) {
@@ -146,7 +159,8 @@ public class MatchingServiceImpl implements MatchingService {
         }
     }
 
-    private Matching createNewDomain(MatchingRequest request) {
+    private Matching createNewDomain(MatchingRequest request,
+                                     List<Matching> existingMatchings) {
         return Matching.createNew(
                 request.getMemberId(),
                 request.getCategory(),
@@ -154,7 +168,8 @@ public class MatchingServiceImpl implements MatchingService {
                 request.getLevel(),
                 request.getAge(),
                 request.getIsAttending(),
-                request.getIntroduction()
+                request.getIntroduction(),
+                existingMatchings
         );
     }
 }

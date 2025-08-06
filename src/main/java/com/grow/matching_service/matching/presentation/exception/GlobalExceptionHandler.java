@@ -1,7 +1,8 @@
 package com.grow.matching_service.matching.presentation.exception;
 
-import com.grow.matching_service.matching.application.exception.AccessDeniedException;
-import com.grow.matching_service.matching.application.exception.AlreadyDeletedException;
+import com.grow.matching_service.matching.domain.exception.AccessDeniedException;
+import com.grow.matching_service.matching.domain.exception.AlreadyDeletedException;
+import com.grow.matching_service.matching.domain.exception.MatchingLimitExceededException;
 import com.grow.matching_service.matching.domain.exception.InvalidMatchingParameterException;
 import com.grow.matching_service.matching.application.exception.MatchingNotFoundException;
 import jakarta.persistence.OptimisticLockException;
@@ -112,6 +113,21 @@ public class GlobalExceptionHandler {
         log.error("[Domain Error] 이미 삭제된 데이터: {}", ex.getErrorCode().getMessage());
         return ErrorResponse.builder()
                 .error(List.of("[Domain Error] 이미 삭제된 데이터"))
+                .status(HttpStatus.CONFLICT.value())
+                .errorCode(ex.getErrorCode().toString())
+                .message(ex.getErrorCode().getMessage())
+                .path(request.getRequestURI())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler(MatchingLimitExceededException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleMatchingLimitExceededException(MatchingLimitExceededException ex,
+                                                              HttpServletRequest request) {
+        log.error("[Domain Error] 매칭 허용 수 초과: {}", ex.getErrorCode().getMessage());
+        return ErrorResponse.builder()
+                .error(List.of("[Domain Error] 매칭 허용 수 초과"))
                 .status(HttpStatus.CONFLICT.value())
                 .errorCode(ex.getErrorCode().toString())
                 .message(ex.getErrorCode().getMessage())

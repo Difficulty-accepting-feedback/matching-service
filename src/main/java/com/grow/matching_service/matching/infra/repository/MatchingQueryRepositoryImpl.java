@@ -1,6 +1,7 @@
 package com.grow.matching_service.matching.infra.repository;
 
 import com.grow.matching_service.matching.domain.enums.Age;
+import com.grow.matching_service.matching.domain.enums.MatchingStatus;
 import com.grow.matching_service.matching.infra.dto.MatchingQueryDto;
 import com.grow.matching_service.matching.infra.dto.MatchingResult;
 import com.grow.matching_service.matching.infra.entity.MatchingJpaEntity;
@@ -82,6 +83,7 @@ public class MatchingQueryRepositoryImpl implements MatchingQueryRepository {
                         target.age,
                         target.isAttending,
                         target.introduction,
+                        target.status,
                         score
                 ))
                 .from(target)
@@ -89,7 +91,8 @@ public class MatchingQueryRepositoryImpl implements MatchingQueryRepository {
                         target.memberId.ne(reference.getMemberId()),    // 본인 제외
                         target.category.eq(reference.getCategory()),    // 카테고리 강제 일치
                         ageCondition,                                   // age 강제 일치
-                        score.goe(1)                              // 1점 이상
+                        score.goe(1),                             // 1점 이상
+                        target.status.eq(MatchingStatus.ACTIVE)         // 활성화된 유저만 조회
                 )
                 .orderBy(score.desc()) // 점수 내림차순 정렬 (높은 순서부터)
                 .fetch();
