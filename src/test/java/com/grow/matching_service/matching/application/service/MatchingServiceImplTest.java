@@ -37,7 +37,6 @@ class MatchingServiceImplTest {
     void createMatching() throws Exception {
         //given
         MatchingRequest request = new MatchingRequest(
-                1L,
                 Category.STUDY,
                 MostActiveTime.EVENING,
                 Level.BLOOMING,
