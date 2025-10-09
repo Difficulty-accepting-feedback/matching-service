@@ -1,9 +1,10 @@
 package com.grow.matching_service.matching.application.service;
 
+import com.grow.matching_service.common.exception.ErrorCode;
+import com.grow.matching_service.common.exception.service.ServiceException;
 import com.grow.matching_service.matching.application.dto.MatchingResponse;
 import com.grow.matching_service.matching.domain.dto.MatchingUpdateRequest;
 import com.grow.matching_service.matching.domain.enums.Category;
-import com.grow.matching_service.matching.application.exception.MatchingNotFoundException;
 import com.grow.matching_service.matching.presentation.dto.MatchingRequest;
 import com.grow.matching_service.matching.domain.model.Matching;
 import com.grow.matching_service.matching.domain.repository.MatchingRepository;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static com.grow.matching_service.matching.application.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -41,7 +40,14 @@ public class MatchingServiceImpl implements MatchingService {
                 request.getCategory(),
                 memberId
         );
-        Matching matching = createNewDomain(request, matchings); // 도메인 생성
+
+        if (matchings.size() >= 3) {
+            log.error("[MATCH] 카테고리별 3개의 매칭이 초과되었습니다. - category: {}, memberId: {}",
+                    request.getCategory(), memberId);
+            throw new ServiceException(ErrorCode.MATCHING_TOO_MANY);
+        }
+
+        Matching matching = createNewDomain(request, matchings, memberId); // 도메인 생성
 
         // 레포지토리에 저장
         matchingRepository.save(matching);
@@ -83,7 +89,7 @@ public class MatchingServiceImpl implements MatchingService {
 
         // 도메인 객체 로드 (NotFound 예외)
         Matching matching = matchingRepository.findByMatchingId(matchingId)
-                .orElseThrow(() -> new MatchingNotFoundException(MATCHING_NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(ErrorCode.MATCHING_NOT_FOUND));
 
         // request 값으로 도메인 업데이트
         updateMatchingFields(request, matching);
@@ -100,14 +106,14 @@ public class MatchingServiceImpl implements MatchingService {
      * @param matchingId 삭제할 매칭의 고유 ID. null이 아닌 유효한 값이어야 합니다.
      * @param memberId   삭제를 요청하는 멤버의 고유 ID. null이 아닌 유효한 값이어야 합니다.
      * @throws IllegalArgumentException  matchingId 또는 memberId가 null일 경우 발생합니다
-     * @throws MatchingNotFoundException 주어진 matchingId에 해당하는 매칭이 존재하지 않을 경우 발생합니다.
+     * @throws ServiceException 주어진 matchingId에 해당하는 매칭이 존재하지 않을 경우 발생합니다.
      */
     @Override
     @Transactional
     public void deleteMatching(Long matchingId, Long memberId) {
 
         Matching matching = matchingRepository.findByMatchingId(matchingId).orElseThrow(() ->
-                new MatchingNotFoundException(MATCHING_NOT_FOUND));
+                new ServiceException(ErrorCode.MATCHING_NOT_FOUND));
 
         matching.delete(memberId); // 도메인 메서드 호출
         matchingRepository.save(matching); // soft delete 처리 -> DB에 저장된 상태만 유지
@@ -134,9 +140,10 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     private Matching createNewDomain(MatchingRequest request,
-                                     List<Matching> existingMatchings) {
+                                     List<Matching> existingMatchings,
+                                     Long memberId) {
         return Matching.createNew(
-                request.getMemberId(),
+                memberId,
                 request.getCategory(),
                 request.getMostActiveTime(),
                 request.getLevel(),
