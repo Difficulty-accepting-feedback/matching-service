@@ -15,8 +15,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MatchingRequest {
 
-    @NotNull(message = "회원 ID는 필수입니다.")
-    private Long memberId;
     @NotNull(message = "카테고리는 필수입니다.")
     private Category category;
     @NotNull(message = "활동 시간은 필수입니다.")

@@ -32,11 +32,11 @@ public class MatchingController {
     public RsData<String> createMatching(@Valid @RequestBody MatchingRequest request,
                                          @RequestHeader("X-Authorization-Id") Long memberId) {
 
-        log.info("[MATCH] 매칭 정보 생성 요청 - request member: {}", request.getMemberId());
+        log.info("[MATCH] 매칭 정보 생성 요청 - request member: {}", memberId);
 
         matchingService.createMatching(request, memberId);
 
-        log.info("[MATCH] 매칭 정보 생성 완료 - request member: {}", request.getMemberId());
+        log.info("[MATCH] 매칭 정보 생성 완료 - request member: {}", memberId);
 
         return new RsData<>(
                 "201",
