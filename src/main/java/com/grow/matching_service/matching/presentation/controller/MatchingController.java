@@ -29,18 +29,15 @@ public class MatchingController {
      * @param request 매칭 요청 DTO
      */
     @PostMapping("/save")
-    public RsData<String> createMatching(@Valid @RequestBody MatchingRequest request,
-                                         @RequestHeader("X-Authorization-Id") Long memberId) {
+    public RsData<MatchingResponse> createMatching(@Valid @RequestBody MatchingRequest request,
+                                                                  @RequestHeader("X-Authorization-Id") Long memberId) {
 
-        log.info("[MATCH] 매칭 정보 생성 요청 - request member: {}", memberId);
-
-        matchingService.createMatching(request, memberId);
-
-        log.info("[MATCH] 매칭 정보 생성 완료 - request member: {}", memberId);
+        MatchingResponse matching = matchingService.createMatching(request, memberId);
 
         return new RsData<>(
                 "201",
-                "매칭 정보 생성 완료"
+                "매칭 정보 생성 완료",
+                matching
         );
     }
 

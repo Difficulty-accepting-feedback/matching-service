@@ -34,7 +34,7 @@ public class MatchingServiceImpl implements MatchingService {
      */
     @Override
     @Transactional
-    public void createMatching(MatchingRequest request, Long memberId) {
+    public MatchingResponse createMatching(MatchingRequest request, Long memberId) {
         // 카테고리별 매칭 정보 조회 (갯수 확인을 위함)
         List<Matching> matchings = matchingRepository.findByCategoryAndMemberId(
                 request.getCategory(),
@@ -50,7 +50,9 @@ public class MatchingServiceImpl implements MatchingService {
         Matching matching = createNewDomain(request, matchings, memberId); // 도메인 생성
 
         // 레포지토리에 저장
-        matchingRepository.save(matching);
+        Matching saved = matchingRepository.save(matching);
+
+        return MatchingResponse.from(saved); // DTO 객체로 변환
     }
 
     /**
