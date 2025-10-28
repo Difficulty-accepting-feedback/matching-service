@@ -90,7 +90,7 @@ jobs:
       # Kustomization에서 이미지 태그 업데이트 (newTag: github.sha)
       - name: Update Kustomization image tag
         run: |
-          cd manifests/gateway
+          cd manifests/matching
           ls -la
           if [ ! -f kustomization.yaml ]; then
             echo "Error: kustomization.yaml not found!"
